@@ -374,6 +374,13 @@ impl ToolRegistry {
         self.specs.values().cloned().collect()
     }
 
+    /// Validate and execute a tool call.
+    ///
+    /// Looks up the tool by name, verifies the payload kind matches the
+    /// handler, enforces the `allow_mutating` guard, acquires the
+    /// appropriate execution lock, and forwards the call to the handler.
+    /// Returns a [`FunctionCallError`] if any validation step fails or
+    /// the handler returns an error.
     pub async fn dispatch(
         &self,
         call: ToolCall,
